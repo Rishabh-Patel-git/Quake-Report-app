@@ -40,6 +40,8 @@ public final class QueryUtils  {
         if (TextUtils.isEmpty(jsonString)) {
             return null;
         }
+
+
         // Create an empty ArrayList that we can start adding earthquakes to
         ArrayList<EarthQuake> earthquakes = new ArrayList<>();
 
