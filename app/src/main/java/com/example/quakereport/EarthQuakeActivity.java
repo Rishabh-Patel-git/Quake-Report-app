@@ -26,32 +26,33 @@ public class EarthQuakeActivity extends AppCompatActivity {
  private static final String url = "https://earthquake.usgs.gov/fdsnws/event/1/query?format=geojson&eventtype=earthquake&orderby=time&minmag=6&limit=10";
   private   ArrayList<EarthQuake> earthQuakes;
    EarthQuakeAdapter adapter;
-
+    ListView mylist;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-//        StringRequest stringRequest = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
-//            @Override
-//            public void onResponse(String response) {
-//
-//            }
-//
-//        }, new Response.ErrorListener() {
-//            @Override
-//            public void onErrorResponse(VolleyError error) {
-//
-//            }
-//        });
-//        RequestQueue mRequest = Volley.newRequestQueue(this);
-//        mRequest.add(stringRequest);
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                earthQuakes = QueryUtils.extractEarthquakes(response);
+                adapter = new EarthQuakeAdapter(getApplicationContext(),earthQuakes );
+                mylist.setAdapter(adapter);
+            }
 
 
-        ListView mylist = findViewById(R.id.myList);
-        earthQuakes = QueryUtils.extractEarthquakes();
-        adapter = new EarthQuakeAdapter(this,earthQuakes );
-        if(earthQuakes != null)
-        mylist.setAdapter(adapter);
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+
+            }
+        });
+        RequestQueue mRequest = Volley.newRequestQueue(this);
+        mRequest.add(stringRequest);
+
+
+
+        mylist = findViewById(R.id.myList);
+
 
         mylist.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
